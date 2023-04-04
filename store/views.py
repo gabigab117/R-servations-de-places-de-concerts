@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Concert
+from .models import Concert, Ticket
 
 
 def index(request):
@@ -10,5 +10,4 @@ def index(request):
 
 def concert_detail(request, slug):
     concert = get_object_or_404(Concert, slug=slug)
-
     return render(request, 'store/detail.html', context={"concert": concert})

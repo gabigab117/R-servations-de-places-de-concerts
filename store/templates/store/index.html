@@ -9,7 +9,10 @@
 <p><h2>{{ concert.name.name }} a {{ concert.city.name }}</h2></p>
 <img src="{{ concert.thumbnail.url }}" alt="{{ concert.name.name }}" width="600">
 <p><i>Date : {{ concert.ticket.date }}, {{ concert.place }} - {{ concert.ticket.count }} places restante(s)</i></p>
+{% endfor %}
 
+{% for ticket in tickets %}
+<p><h2>{{ ticket.name }}}</h2></p>
 {% endfor %}
 
 
