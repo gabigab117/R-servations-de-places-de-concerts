@@ -67,11 +67,12 @@ class Concert(models.Model):
     type = models.CharField(max_length=100, choices=choices, verbose_name="Genre")
     place = models.CharField(max_length=300, verbose_name="Salle de concert")
     ticket = models.ManyToManyField(Ticket)
+    city = models.ForeignKey(Town, on_delete=models.CASCADE)
     thumbnail = models.ImageField(upload_to="concerts")
 
     def __str__(self):
 
-        return f"{self.name}, {self.ticket.city.name}"
+        return f"{self.name}, {self.city.name}"
 
     def save(self, *args, **kwargs):
 
