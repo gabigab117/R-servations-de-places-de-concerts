@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from .forms import CustomUserCreation
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 
 def signup(request):
@@ -23,8 +23,8 @@ def signup(request):
 def login_user(request):
     context = {}
     if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
+        username = request.POST["username"]
+        password = request.POST["password"]
         user = authenticate(username=username, password=password)
         if user:
             login(request, user)
@@ -34,3 +34,8 @@ def login_user(request):
             context["error"] = "email ou mot de passe invalide."
 
     return render(request, "accounts/login.html", context=context)
+
+
+def logout_user(request):
+    logout(request)
+    return redirect('index')

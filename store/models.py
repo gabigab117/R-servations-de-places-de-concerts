@@ -23,6 +23,9 @@ class Town(models.Model):
     name = models.CharField(max_length=300, unique=True)
     slug = models.SlugField(unique=True, blank=True)
 
+    class Meta:
+        verbose_name = "Ville"
+
     def __str__(self):
         return f"{self.name}"
 
@@ -32,6 +35,22 @@ class Town(models.Model):
             self.slug = slugify(self.name)
 
         super().save(*args, **kwargs)
+
+
+class Ticket(models.Model):
+    # relation avec les concerts, plusieurs types de tickets...
+    name = models.CharField(max_length=100, verbose_name="Ticket")
+    price = models.IntegerField(default=0)
+    count = models.IntegerField(default=0, verbose_name="Nombre de places")
+    artist = models.ForeignKey(Artist, on_delete=models.CASCADE, verbose_name="Artiste")
+    city = models.ForeignKey(Town, on_delete=models.CASCADE)
+    country = models.CharField(max_length=300, choices=[(c.alpha2.lower(), c.name) for c in countries],
+                               verbose_name="Pays")
+    date = models.DateTimeField(verbose_name="Date / heure")
+
+    def __str__(self):
+
+        return f"{self.name}, {self.artist.name}, {self.city.name}"
 
 
 class Concert(models.Model):
@@ -46,17 +65,13 @@ class Concert(models.Model):
     name = models.ForeignKey(Artist, on_delete=models.CASCADE, verbose_name="Artiste")
     slug = models.SlugField(unique=True, blank=True)
     type = models.CharField(max_length=100, choices=choices, verbose_name="Genre")
-    places_count = models.IntegerField(verbose_name="Nombre de places")
-    place = models.CharField(max_length=300, verbose_name="Salle")
-    city = models.ForeignKey(Town, verbose_name="Ville", on_delete=models.CASCADE)
-    country = models.CharField(max_length=300, choices=[(c.alpha2.lower(), c.name) for c in countries],
-                               verbose_name="Pays")
-    date = models.DateTimeField(verbose_name="Date / heure")
+    place = models.CharField(max_length=300, verbose_name="Salle de concert")
+    ticket = models.ManyToManyField(Ticket)
     thumbnail = models.ImageField(upload_to="concerts")
 
     def __str__(self):
 
-        return f"{self.name}, {self.city.name}"
+        return f"{self.name}, {self.ticket.city.name}"
 
     def save(self, *args, **kwargs):
 
@@ -64,16 +79,6 @@ class Concert(models.Model):
             self.slug = slugify(self.name)
 
         super().save(*args, **kwargs)
-
-
-class Ticket(models.Model):
-    # relation avec les concerts, plusieurs types de tickets...
-    name = models.CharField(max_length=100, verbose_name="Ticket")
-    concert_name = models.ForeignKey(Concert, on_delete=models.CASCADE, verbose_name="Artiste")
-
-    def __str__(self):
-
-        return f"{self.name}, {self.concert_name.name}"
 
 
 class Order(models.Model):
