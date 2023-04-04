@@ -69,6 +69,7 @@ class Concert(models.Model):
     ticket = models.ManyToManyField(Ticket)
     city = models.ForeignKey(Town, on_delete=models.CASCADE)
     thumbnail = models.ImageField(upload_to="concerts")
+    date = models.DateTimeField(verbose_name="Date / heure")
 
     def __str__(self):
 
