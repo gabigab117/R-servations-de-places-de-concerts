@@ -1,5 +1,5 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Concert, Ticket
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Concert, Cart, Order
 
 
 def index(request):
@@ -11,3 +11,21 @@ def index(request):
 def concert_detail(request, slug):
     concert = get_object_or_404(Concert, slug=slug)
     return render(request, 'store/detail.html', context={"concert": concert})
+
+
+def add_to_cart(request, slug, pk):
+    user = request.user
+    concert: Concert = get_object_or_404(Concert, slug=slug)
+    ticket = concert.ticket.get(artist=concert.name, city=concert.city, pk=pk)
+
+    cart, _ = Cart.objects.get_or_create(user=user)
+    order, created = Order.objects.get_or_create(ticket=ticket, ordered=False, user=user)
+
+    if created:
+        cart.orders.add(order)
+        cart.save()
+    else:
+        order.quantity += 1
+        order.save()
+
+    return redirect('index')

@@ -7,4 +7,14 @@
 {% block content %}
 {{ concert.name.name }}
 
+{% for ticket in concert.ticket.all %}
+<p>
+<i>{{ ticket.name }} - {{ ticket.count }} places restante(s).</i>
+    </p>
+{% if user.is_authenticated %}
+<p><a href="">Ajouter au panier</a> </p>
+{% endif %}
+
+{% endfor %}
+
 {% endblock %}

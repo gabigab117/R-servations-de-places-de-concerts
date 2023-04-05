@@ -1,5 +1,6 @@
 from django.db import models
 from django.template.defaultfilters import slugify
+from django.urls import reverse
 from iso3166 import countries
 from project.settings import AUTH_USER_MODEL
 
@@ -71,6 +72,9 @@ class Concert(models.Model):
     thumbnail = models.ImageField(upload_to="concerts")
     date = models.DateTimeField(verbose_name="Date / heure")
 
+    def get_absolute_url(self):
+        return reverse('store:concert-detail', kwargs={"slug": self.slug})
+
     def __str__(self):
 
         return f"{self.name}, {self.city.name}"
@@ -101,6 +105,9 @@ class Cart(models.Model):
     # un utilisateur ne peut avoir qu'un panier
     user = models.OneToOneField(AUTH_USER_MODEL, on_delete=models.CASCADE)
     orders = models.ManyToManyField(Order)
+
+    def __str__(self):
+        return f"(panier){self.user}"
 
 
 '''
