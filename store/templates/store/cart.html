@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>{{ cart.user }}}</title>
+{% endblock %}
+
+{% block content %}
+<p>Votre panier - {{ cart.user }}</p>
+{% for order in orders %}
+<p>{{ order.ticket.name }} - {{ order.quantity }}</p>
+{% endfor %}
+
+<p><a href="{% url 'store:delete-cart' %}">Supprimer le panier</a></p>
+{% endblock %}

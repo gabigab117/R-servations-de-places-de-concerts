@@ -29,9 +29,11 @@
            <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{% url 'account:logout' %}">Déconnexion</a>
         </li>
+            {% if request.user.cart %}
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Panier</a>
+          <a class="nav-link active" aria-current="page" href="{% url 'store:cart' %}">Panier</a>
         </li>
+          {% endif %}
           {% endif %}
 
       </ul>

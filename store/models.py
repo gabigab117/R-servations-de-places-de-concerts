@@ -109,6 +109,16 @@ class Cart(models.Model):
     def __str__(self):
         return f"(panier){self.user}"
 
+    def delete(self, *args, **kwargs):
+        orders = self.orders.all()
+
+        for order in orders:
+            order.ticket.count += order.quantity
+            order.ticket.save()
+            order.delete()
+
+        super().delete(*args, **kwargs)
+
 
 '''
 voir pour un panier, et un order comme le tuto e-commerce ?

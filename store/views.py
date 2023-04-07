@@ -28,4 +28,21 @@ def add_to_cart(request, slug, pk):
         order.quantity += 1
         order.save()
 
+    ticket.count -= 1
+    ticket.save()
+
     return redirect('index')
+
+
+def cart(request):
+    cart: Cart = request.user.cart
+
+    orders = cart.orders.all()
+
+    return render(request, 'store/cart.html', context={"cart": cart, "orders": orders})
+
+
+def delete_cart(request):
+    cart = request.user.cart
+    cart.delete()
+    return redirect("index")
