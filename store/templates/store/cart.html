@@ -7,7 +7,7 @@
 {% block content %}
 <p>Votre panier - {{ cart.user }}</p>
 {% for order in orders %}
-<p>{{ order.ticket.name }} - {{ order.quantity }}</p>
+<p>{{ order.ticket.name }} / {{ order.ticket.artist.name }} - {{ order.quantity }}</p>
 {% endfor %}
 
 <p><a href="{% url 'store:delete-cart' %}">Supprimer le panier</a></p>

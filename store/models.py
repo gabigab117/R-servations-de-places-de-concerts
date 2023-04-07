@@ -105,6 +105,7 @@ class Cart(models.Model):
     # un utilisateur ne peut avoir qu'un panier
     user = models.OneToOneField(AUTH_USER_MODEL, on_delete=models.CASCADE)
     orders = models.ManyToManyField(Order)
+    order_validated = models.BooleanField(default=False)
 
     def __str__(self):
         return f"(panier){self.user}"
