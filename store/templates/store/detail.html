@@ -7,12 +7,12 @@
 {% block content %}
 {{ concert.name.name }}
 
-{% for ticket in concert.ticket.all %}
+{% for ticket in tickets %}
 <p>
 <i>{{ ticket.name }} - {{ ticket.count }} places restante(s).</i>
     </p>
 {% if user.is_authenticated %}
-<p><a href="{% url 'store:add-to-cart' slug=concert.slug pk=ticket.pk %}">Ajouter au panier</a> </p>
+<p><a href="{% url 'store:add-to-cart' pk=ticket.pk %}">Ajouter au panier</a> </p>
 {% endif %}
 
 {% endfor %}

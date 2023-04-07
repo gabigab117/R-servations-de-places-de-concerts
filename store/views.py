@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Concert, Cart, Order
+from .models import Concert, Cart, Order, Ticket
 from project.settings import STRIPE_APIKEY
 
 STRIPE_KEY = STRIPE_APIKEY
@@ -12,14 +12,14 @@ def index(request):
 
 
 def concert_detail(request, slug):
-    concert = get_object_or_404(Concert, slug=slug)
-    return render(request, 'store/detail.html', context={"concert": concert})
-
-
-def add_to_cart(request, slug, pk):
-    user = request.user
     concert: Concert = get_object_or_404(Concert, slug=slug)
-    ticket = concert.ticket.get(pk=pk)
+    tickets = concert.ticket.all()
+    return render(request, 'store/detail.html', context={"concert": concert, "tickets": tickets})
+
+
+def add_to_cart(request, pk):
+    user = request.user
+    ticket: Ticket = Ticket.objects.get(pk=pk)
 
     cart, _ = Cart.objects.get_or_create(user=user)
     order, created = Order.objects.get_or_create(ticket=ticket, ordered=False, user=user)
