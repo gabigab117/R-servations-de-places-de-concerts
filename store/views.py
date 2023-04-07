@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Concert, Cart, Order, Ticket
 from project.settings import STRIPE_APIKEY
+import stripe
 
-STRIPE_KEY = STRIPE_APIKEY
+stripe.api_key = STRIPE_APIKEY
 
 
 def index(request):
@@ -49,3 +50,27 @@ def delete_cart(request):
     cart = request.user.cart
     cart.delete()
     return redirect("index")
+
+
+def create_checkout_session(request):
+    # voir la doc https://stripe.com/docs/payments/accept-a-payment
+    # créer un objet de type Session
+    # https://stripe.com/docs/api/checkout/sessions/create
+    session = stripe.checkout.Session.create(
+        locale="fr",
+        line_items=[{
+            'price_data': {
+                'currency': 'usd',
+                'product_data': {
+                    'name': 'T-shirt',
+                },
+                'unit_amount': 2000,
+            },
+            'quantity': 1,
+        }],
+        mode='payment',
+        success_url='http://127.0.0.1:8000',
+        cancel_url='http://127.0.0.1:8000',
+    )
+
+    return redirect(session.url, code=303)

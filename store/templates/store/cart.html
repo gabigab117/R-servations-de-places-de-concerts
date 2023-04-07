@@ -10,5 +10,10 @@
 <p>{{ order.ticket.name }} / {{ order.ticket.artist.name }} - {{ order.quantity }}</p>
 {% endfor %}
 
+<form action="{% url 'store:create-checkout-session' %}" method="POST">
+    {% csrf_token %}
+<button type="submit">Procéder au paiement</button>
+    </form>
+
 <p><a href="{% url 'store:delete-cart' %}">Supprimer le panier</a></p>
 {% endblock %}

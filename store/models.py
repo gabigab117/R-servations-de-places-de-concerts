@@ -48,6 +48,7 @@ class Ticket(models.Model):
     country = models.CharField(max_length=300, choices=[(c.alpha2.lower(), c.name) for c in countries],
                                verbose_name="Pays")
     date = models.DateTimeField(verbose_name="Date / heure")
+    stripe_id = models.CharField(max_length=90, blank=True)
 
     def __str__(self):
 
