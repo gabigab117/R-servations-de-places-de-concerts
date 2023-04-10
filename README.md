@@ -11,4 +11,21 @@ https://stripe.com/docs/payments/checkout <br>
 https://stripe.com/docs/payments/accept-a-payment (tout est détaillé)<br>
 locale="fr" pour trad en FR<br>
 https://stripe.com/docs/api/checkout/sessions/create <br>
-ajouter un champ ID stripe dans ce que l'on vend : 
+ajouter un champ ID stripe dans ce que l'on vend. <br>
+créer les produits sur stripe puis copier l'id.<br>
+
+Il faut maintenant récupérer le panier dans ma vue.<br>
+Puis le line_items supprimer la valeur attribuée pour remplacer par une variable line_items que l'on définit avant.<br>
+dans line_items compréhension de liste avec mes produits. Pour voir ce que l'on peu <br>
+mettre on peut aller voir dans la doc<br>
+https://stripe.com/docs/api/financial_connections/sessions/object <br>
+https://stripe.com/docs/api/checkout/sessions/line_items <br>
+Puis je créer une vue de succès avec un return html.<br>
+Il faut faire un reverse dans success_url mais il faut url absolue car je suis dans stripe<br>
+request.build_absolute_uri <br>
+
+Il faut ensuite créer un webhook et installer CLI avant<br>
+https://stripe.com/docs/webhooks/signatures <br>
+stripe listen --forward-to 127.0.0.1:8000/store/stripe-webhook/ <br>
+dans ma vue webhook copier le code et définir un endpoint_secret <br>
+puis faire le if event : https://stripe.com/docs/api/events <br>

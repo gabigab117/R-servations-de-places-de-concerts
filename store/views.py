@@ -1,4 +1,11 @@
+import os
+from pprint import pprint
+
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
+
 from .models import Concert, Cart, Order, Ticket
 from project.settings import STRIPE_APIKEY
 import stripe
@@ -48,29 +55,64 @@ def cart(request):
 
 def delete_cart(request):
     cart = request.user.cart
-    cart.delete()
+    cart.order_ko()
     return redirect("index")
 
 
 def create_checkout_session(request):
+    # récupérer le panier
+    cart = request.user.cart
+
+    # compréhension de liste line_items :
+    line_items = [{"price": order.ticket.stripe_id,
+                   "quantity": order.quantity} for order in cart.orders.all()]
     # voir la doc https://stripe.com/docs/payments/accept-a-payment
     # créer un objet de type Session
     # https://stripe.com/docs/api/checkout/sessions/create
     session = stripe.checkout.Session.create(
         locale="fr",
-        line_items=[{
-            'price_data': {
-                'currency': 'usd',
-                'product_data': {
-                    'name': 'T-shirt',
-                },
-                'unit_amount': 2000,
-            },
-            'quantity': 1,
-        }],
+        line_items=line_items,
         mode='payment',
-        success_url='http://127.0.0.1:8000',
+        success_url=request.build_absolute_uri(reverse('store:success')),
         cancel_url='http://127.0.0.1:8000',
     )
 
     return redirect(session.url, code=303)
+
+
+# créer une vue pour dire que la commande est payée
+def checkout_success(request):
+    return render(request, "store/success.html")
+
+
+# https://stripe.com/docs/webhooks?locale=fr-CA
+@csrf_exempt
+def stripe_webhook(request):
+    payload = request.body
+    sig_header = request.META['HTTP_STRIPE_SIGNATURE']
+    endpoint_secret = os.getenv('endpoint_secret')
+    event = None
+
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, endpoint_secret
+        )
+    except ValueError as e:
+        # Invalid payload
+        return HttpResponse(status=400)
+    except stripe.error.SignatureVerificationError as e:
+        # Invalid signature
+        return HttpResponse(status=400)
+
+    # j'ai tout copié tel quel en supprimant les vérifications défaut.
+    # je crée ma vérif :
+    # https://stripe.com/docs/api/events
+    if event['type'] == 'checkout.session.completed':
+        data = event['data']['object']
+        return complete_order(data=data)
+
+    return HttpResponse(status=200)
+
+
+def complete_order(data):
+    pprint(data)

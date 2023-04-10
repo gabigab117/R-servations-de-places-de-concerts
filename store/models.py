@@ -1,6 +1,7 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.urls import reverse
+from django.utils import timezone
 from iso3166 import countries
 from project.settings import AUTH_USER_MODEL
 
@@ -106,20 +107,28 @@ class Cart(models.Model):
     # un utilisateur ne peut avoir qu'un panier
     user = models.OneToOneField(AUTH_USER_MODEL, on_delete=models.CASCADE)
     orders = models.ManyToManyField(Order)
-    order_validated = models.BooleanField(default=False)
 
     def __str__(self):
         return f"(panier){self.user}"
 
-    def delete(self, *args, **kwargs):
+    def order_ok(self):
+        orders = self.orders.all()
+
+        for order in orders:
+            order.ordered = True
+            order.ordered_date = timezone.now()
+            order.save()
+        self.orders.clear()
+        self.delete()
+
+    def order_ko(self):
         orders = self.orders.all()
 
         for order in orders:
             order.ticket.count += order.quantity
             order.ticket.save()
             order.delete()
-
-        super().delete(*args, **kwargs)
+        self.delete()
 
 
 '''
