@@ -6,9 +6,11 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
+from accounts.models import Shopper
 from .models import Concert, Cart, Order, Ticket
 from project.settings import STRIPE_APIKEY
 import stripe
+import iso3166
 
 stripe.api_key = STRIPE_APIKEY
 
@@ -71,6 +73,10 @@ def create_checkout_session(request):
     # https://stripe.com/docs/api/checkout/sessions/create
     session = stripe.checkout.Session.create(
         locale="fr",
+        # récupérer l'email utilisateur
+        customer_email=request.user.email,
+        # récupérer l'adresse utilisateur
+        shipping_address_collection={"allowed_countries": ["FR"]},
         line_items=line_items,
         mode='payment',
         success_url=request.build_absolute_uri(reverse('store:success')),
@@ -109,10 +115,27 @@ def stripe_webhook(request):
     # https://stripe.com/docs/api/events
     if event['type'] == 'checkout.session.completed':
         data = event['data']['object']
-        return complete_order(data=data)
+        # récupérer l'utilisateur
+        try:
+            user: Shopper = get_object_or_404(Shopper, email=data['customer_details']['email'])
+
+        except KeyError:
+            return HttpResponse("invalid user email", status=404)
+        # --^^-- appel de mes fonctions
+        complete_order(data=data, user=user)
+        save_shipping_address(data=data, user=user)
+        return HttpResponse(status=200)
 
     return HttpResponse(status=200)
 
 
-def complete_order(data):
-    pprint(data)
+def complete_order(data, user):
+    user.stripe_id = data["customer"]
+    user.cart.order_ok()
+    user.save()
+
+    return HttpResponse(status=200)
+
+
+def save_shipping_address(data, user):
+    pass

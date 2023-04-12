@@ -26,6 +26,9 @@
         </li>
           {% endif %}
           {% if request.user.is_authenticated %}
+                <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'account:profil' %}">Profile</a>
+        </li>
            <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{% url 'account:logout' %}">Déconnexion</a>
         </li>

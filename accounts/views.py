@@ -1,7 +1,10 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from .forms import CustomUserCreation
+from .forms import CustomUserCreation, ProfilForm
 from django.contrib.auth import authenticate, login, logout
+from django.forms import model_to_dict
+from .models import Shopper
 
 
 def signup(request):
@@ -39,3 +42,25 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     return redirect('index')
+
+
+@login_required(login_url='account:login')
+def profil(request):
+    context = {}
+    # dans le initial je vais passer en dictionnaire mon instance user
+    # authenticate pour vérifier si l'email est ok et mdp
+    if request.method == "POST":
+        user_ok = authenticate(email=request.POST["email"], password=request.POST["password"])
+        if user_ok:
+            user: Shopper = request.user
+            user.genre = request.POST["genre"]
+            user.last_name = request.POST["last_name"]
+            user.first_name = request.POST["first_name"]
+            user.tel = request.POST["tel"]
+            user.save()
+            return redirect("account:profil")
+        else:
+            context['error'] = "Email ou Mdp invalide"
+
+    context['form'] = ProfilForm(initial=model_to_dict(request.user, exclude="password"))
+    return render(request, 'accounts/profil.html', context=context)

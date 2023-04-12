@@ -1,3 +1,11 @@
+ce qu'il me reste à faire :<br>
+- sauvegarder le client et l'adresse (stripe)
+- améliorer la gestion des adresses
+- supprimer une adresse
+- modifier les quantités dans le panier
+- maj des qtés
+- supp un article du panier
+
 # Réservation de places de concerts
  projet django style e commerce
 
