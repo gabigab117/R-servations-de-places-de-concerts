@@ -40,10 +40,11 @@ class Shopper(AbstractUser):
 
 
 class ShippingAddress(models.Model):
-    user: Shopper = models.ForeignKey(Shopper, on_delete=models.CASCADE, verbose_name="utilisateur")
+    user: Shopper = models.ForeignKey(Shopper, on_delete=models.CASCADE, verbose_name="utilisateur", related_name="addresses")
     name = models.CharField(max_length=200, verbose_name="nom de l'adresse")
     address_1 = models.CharField(max_length=1024, help_text="Voirie, numéro de rue", verbose_name="Adresse 1")
-    address_2 = models.CharField(max_length=1024, help_text="Bât, étage, lieu-dit", verbose_name="Adresse 2", blank=True)
+    address_2 = models.CharField(max_length=1024, help_text="Bât, étage, lieu-dit", verbose_name="Adresse 2",
+                                 blank=True)
     city = models.CharField(max_length=1024, verbose_name="Commune")
     zip_code = models.CharField(max_length=32, verbose_name="Code Postal")
     country = models.CharField(max_length=2, choices=[(c.alpha2.lower(), c.name) for c in iso3166.countries])

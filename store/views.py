@@ -6,7 +6,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
-from accounts.models import Shopper
+from accounts.models import Shopper, ShippingAddress
 from .models import Concert, Cart, Order, Ticket
 from project.settings import STRIPE_APIKEY
 import stripe
@@ -71,17 +71,23 @@ def create_checkout_session(request):
     # voir la doc https://stripe.com/docs/payments/accept-a-payment
     # créer un objet de type Session
     # https://stripe.com/docs/api/checkout/sessions/create
-    session = stripe.checkout.Session.create(
-        locale="fr",
-        # récupérer l'email utilisateur
-        customer_email=request.user.email,
-        # récupérer l'adresse utilisateur
-        shipping_address_collection={"allowed_countries": ["FR"]},
-        line_items=line_items,
-        mode='payment',
-        success_url=request.build_absolute_uri(reverse('store:success')),
-        cancel_url='http://127.0.0.1:8000',
-    )
+    checkout_data = {
+        "locale": "fr",
+        "line_items": line_items,
+        "mode": 'payment',
+        # voir ds la doc. On passe un dico avec une liste de pays autorisés
+        "shipping_address_collection": {"allowed_countries": ["FR", "BE"]},
+        # il faut une url absolue car je suis sur Stripe à ce moment-là
+        "success_url": request.build_absolute_uri(reverse('store:success')),
+        "cancel_url": 'http://127.0.0.1:8000',
+    }
+    if request.user.stripe_id:
+        checkout_data["customer"] = request.user.stripe_id
+    else:
+        checkout_data["customer_email"] = request.user.email
+        checkout_data["customer_creation"] = "always"
+
+    session = stripe.checkout.Session.create(**checkout_data)
 
     return redirect(session.url, code=303)
 
@@ -138,4 +144,37 @@ def complete_order(data, user):
 
 
 def save_shipping_address(data, user):
-    pass
+    """
+       "shipping_details": {
+        "address": {
+          "city": "60650 - ONS EN BRAY",
+          "country": "FR",
+          "line1": "5 rue xxxxxx",
+          "line2": null,
+          "postal_code": "60650",
+          "state": ""
+        },
+        "name": "GABRIEL TROUV\u00c9"
+        """
+    try:
+        address = data["shipping_details"]["address"]
+        name = data["shipping_details"]["name"]
+        city = address["city"]
+        country = address["country"]
+        line1 = address["line1"]
+        line2 = address["line2"]
+        zip_code = address["postal_code"]
+        state = address["state"]
+    except KeyError:
+        return HttpResponse(status=400)
+    # potentiellement l'adresse peut exister
+    ShippingAddress.objects.get_or_create(user=user,
+                                          name=name,
+                                          city = city,
+                                          country=country.lower(),
+                                          address_1=line1,
+                                          address_2=line2 or "",
+                                          zip_code=zip_code)
+    return HttpResponse(status=200)
+
+

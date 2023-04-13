@@ -63,4 +63,7 @@ def profil(request):
             context['error'] = "Email ou Mdp invalide"
 
     context['form'] = ProfilForm(initial=model_to_dict(request.user, exclude="password"))
+
+    context['addresses'] = request.user.addresses.all()
+
     return render(request, 'accounts/profil.html', context=context)

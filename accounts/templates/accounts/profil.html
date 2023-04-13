@@ -10,5 +10,10 @@
 <button type="submit">Mettre à jour</button>
 
 </form>
-<h1>{{ error }}</h1>
+<h1>{{ error }}</h1><br>
+<h1>Adresses : </h1>
+{% for addresse in addresses %}
+<h2>{{ addresse }}</h2>
+{% endfor %}
+
 {% endblock %}
