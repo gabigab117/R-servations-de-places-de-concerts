@@ -1,5 +1,4 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from .forms import CustomUserCreation, ProfilForm
 from django.contrib.auth import authenticate, login, logout
@@ -64,6 +63,7 @@ def profil(request):
 
     context['form'] = ProfilForm(initial=model_to_dict(request.user, exclude="password"))
 
+    # j'évite le request.user.shippingaddress_set.all(), car je pars du champ pour chercher le modèle
     context['addresses'] = request.user.addresses.all()
 
     return render(request, 'accounts/profil.html', context=context)

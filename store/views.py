@@ -170,7 +170,7 @@ def save_shipping_address(data, user):
     # potentiellement l'adresse peut exister
     ShippingAddress.objects.get_or_create(user=user,
                                           name=name,
-                                          city = city,
+                                          city=city,
                                           country=country.lower(),
                                           address_1=line1,
                                           address_2=line2 or "",

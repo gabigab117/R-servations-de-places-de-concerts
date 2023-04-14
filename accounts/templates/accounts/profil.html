@@ -13,7 +13,7 @@
 <h1>{{ error }}</h1><br>
 <h1>Adresses : </h1>
 {% for addresse in addresses %}
-<h2>{{ addresse }}</h2>
+{% include 'accounts/addresses.html' %}
 {% endfor %}
 
 {% endblock %}
