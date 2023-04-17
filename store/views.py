@@ -143,6 +143,7 @@ def complete_order(data, user):
     return HttpResponse(status=200)
 
 
+# enregistrer l'adresse stripe dans ma BDD
 def save_shipping_address(data, user):
     """
        "shipping_details": {

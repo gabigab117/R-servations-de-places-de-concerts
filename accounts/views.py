@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from .forms import CustomUserCreation, ProfilForm
 from django.contrib.auth import authenticate, login, logout
 from django.forms import model_to_dict
-from .models import Shopper
+from .models import Shopper, ShippingAddress
 
 
 def signup(request):
@@ -67,3 +67,26 @@ def profil(request):
     context['addresses'] = request.user.addresses.all()
 
     return render(request, 'accounts/profil.html', context=context)
+
+
+@login_required(login_url='account:login')
+def set_address_default(request, pk):
+    user = request.user
+    user_addresses: ShippingAddress = user.addresses.all()
+
+    '''
+    Au lieu de boucler j'aurais pu faire:
+    user_addresses.update(default=False)
+    Il aurait été mieux de le faire dans mon modèle méthode set_default()
+    voir commentaire dans la méthode set_default()
+    '''
+    for user_addresse in user_addresses:
+        user_addresse.default = False
+        user_addresse.save()
+
+    user_addresse_default = user.addresses.get(pk=pk)
+    user_addresse_default.default = True
+    user_addresse_default.set_default()
+    user_addresse_default.save()
+
+    return redirect('account:profil')

@@ -1,6 +1,10 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 import iso3166
+import stripe
+from project.settings import STRIPE_APIKEY
+
+stripe.api_key = STRIPE_APIKEY
 
 '''
 The prototype of create_user() should accept the username field, plus all required fields as arguments. For example, 
@@ -70,3 +74,37 @@ class ShippingAddress(models.Model):
         # on a pas de retour à la ligne car pas interprété par le HTML. Donc mettre le filtre linebreaks
         # strip enlève les éléments au début et à la fin
         return ADDRESS_FORMAT.format(**data).strip("\n")
+
+    def set_default(self):
+        # https://stripe.com/docs/api/customers/update
+        # vérifier si l'utilisateur a un stripe ID
+        if not self.user.stripe_id:
+            raise ValueError(f"{self.user.email} n'a pas de stripe ID")
+        '''
+        Ce que je fais dans la vue set_adresse_default, j'aurais dû le faire ici
+        self.user.addresses.update(default=False)
+        self.default = True
+        self.save()
+        '''
+
+        stripe.Customer.modify(
+            self.user.stripe_id,
+            shipping={
+                "address": {
+                    "city": self.city,
+                    "country": self.country,
+                    "line1": self.address_1,
+                    "line2": self.address_2,
+                    "postal_code": self.zip_code
+                },
+                "name": self.name
+            },
+            # j'ai deux dictionnaires identiques dans chaque paramètre. Je pourrais attribuer à une var.
+            address={
+                "city": self.city,
+                "country": self.country,
+                "line1": self.address_1,
+                "line2": self.address_2,
+                "postal_code": self.zip_code
+            }
+        )

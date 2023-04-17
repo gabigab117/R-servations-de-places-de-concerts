@@ -16,4 +16,4 @@ class ProfilForm(forms.ModelForm):
 
     class Meta:
         model = Shopper
-        fields = ["email", "genre", "last_name", "first_name", "tel"]
+        fields = ["email", "password", "genre", "last_name", "first_name", "tel"]
