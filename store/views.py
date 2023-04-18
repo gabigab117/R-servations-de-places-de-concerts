@@ -11,6 +11,8 @@ from .models import Concert, Cart, Order, Ticket
 from project.settings import STRIPE_APIKEY
 import stripe
 import iso3166
+from django.forms import modelformset_factory
+from store.forms import OrderForm
 
 stripe.api_key = STRIPE_APIKEY
 
@@ -41,9 +43,6 @@ def add_to_cart(request, pk):
         order.quantity += 1
         order.save()
 
-    ticket.count -= 1
-    ticket.save()
-
     return redirect('index')
 
 
@@ -52,7 +51,19 @@ def cart(request):
 
     orders = cart.orders.all()
 
-    return render(request, 'store/cart.html', context={"cart": cart, "orders": orders})
+    # https://docs.djangoproject.com/fr/4.1/ref/forms/models/
+    # créer une classe depuis modelformset_factory
+    OrderFormSet = modelformset_factory(Order, form=OrderForm, extra=0)
+    # puis créer une instance
+    formset = OrderFormSet(queryset=orders)
+
+    if request.method == "POST":
+        formset = OrderFormSet(request.POST, queryset=orders)
+        if formset.is_valid():
+            formset.save()
+            return redirect('store:cart')
+
+    return render(request, 'store/cart.html', context={"cart": cart, "orders": orders, "forms": formset})
 
 
 def delete_cart(request):

@@ -115,6 +115,8 @@ class Cart(models.Model):
         orders = self.orders.all()
 
         for order in orders:
+            order.ticket.count -= order.quantity
+            order.ticket.save()
             order.ordered = True
             order.ordered_date = timezone.now()
             order.save()
@@ -125,10 +127,15 @@ class Cart(models.Model):
         orders = self.orders.all()
 
         for order in orders:
-            order.ticket.count += order.quantity
-            order.ticket.save()
             order.delete()
         self.delete()
+
+    def total(self):
+        orders = self.orders.all()
+        total_cart = 0
+        for order in orders:
+            total_cart += order.ticket.price * order.quantity
+        return f"{total_cart}"
 
 
 '''

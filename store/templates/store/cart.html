@@ -6,14 +6,31 @@
 
 {% block content %}
 <p>Votre panier - {{ cart.user }}</p>
-{% for order in orders %}
-<p>{{ order.ticket.name }} / {{ order.ticket.artist.name }} - {{ order.quantity }}</p>
+
+<!--
+Form set factory
+-->
+<form method="post">
+    {% csrf_token %}
+    {{ forms.management_form }}
+    {% for form in forms %}
+    <div>
+        <p>{{ form.instance.ticket.artist.name }} -- {{ form.instance.ticket.city.name }}</p>
+        <p>{{ form.instance.ticket.price }} / ticket</p>
+        {{ form.as_p }}
+    </div>
 {% endfor %}
+    <button type="submit" class="btn btn-primary">Mettre à jour les quantités</button>
+</form>
+
+<p><h2>Montant du panier : {{ cart.total }}</h2></p>
+
+
 
 <form action="{% url 'store:create-checkout-session' %}" method="POST">
     {% csrf_token %}
-<button type="submit">Procéder au paiement</button>
+<button type="submit" class="btn btn-primary">Procéder au paiement</button>
     </form>
-
-<p><a href="{% url 'store:delete-cart' %}">Supprimer le panier</a></p>
+<br>
+<p><a href="{% url 'store:delete-cart' %}" class="btn btn-danger">Supprimer le panier</a></p>
 {% endblock %}

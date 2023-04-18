@@ -37,3 +37,11 @@ https://stripe.com/docs/webhooks/signatures <br>
 stripe listen --forward-to 127.0.0.1:8000/store/stripe-webhook/ <br>
 dans ma vue webhook copier le code et définir un endpoint_secret <br>
 puis faire le if event : https://stripe.com/docs/api/events <br>
+Voir ce que j'ai fait et aussi la méthode set_default de ShippingAdress<br> <br>
+--------<br>
+Form Set Factory <br>
+dans mon store je vais ajouter un forms.py<br>
+dans ma vue cart on utilise le modelformset_factory(), on passe le modème et le formulaire<br>
+https://docs.djangoproject.com/fr/4.1/ref/forms/models/ <br>
+On créer une classe puis une instance. On retourne au contexte<br>
+
