@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<title>{{ cart.user }}}</title>
+<title>Panier de {{ user }}}</title>
 {% endblock %}
 
 {% block content %}
-<p>Votre panier - {{ cart.user }}</p>
+<p>Votre panier - {{ user }}</p>
 
 <!--
 Form set factory
@@ -23,7 +23,7 @@ Form set factory
     <button type="submit" class="btn btn-primary">Mettre à jour les quantités</button>
 </form>
 
-<p><h2>Montant du panier : {{ cart.total }}</h2></p>
+<p><h2>Montant du panier : {{ total }}</h2></p>
 
 
 

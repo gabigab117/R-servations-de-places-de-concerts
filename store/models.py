@@ -102,6 +102,15 @@ class Order(models.Model):
 
         return f"{self.ticket.name}, {self.quantity}"
 
+    @classmethod
+    def total(cls, user):
+        total = 0
+        orders_in_cart = Order.objects.filter(user=user, ordered=False)
+        for order in orders_in_cart:
+            total += order.ticket.price * order.quantity
+
+        return f"{total}"
+
 
 class Cart(models.Model):
     # un utilisateur ne peut avoir qu'un panier
@@ -129,13 +138,6 @@ class Cart(models.Model):
         for order in orders:
             order.delete()
         self.delete()
-
-    def total(self):
-        orders = self.orders.all()
-        total_cart = 0
-        for order in orders:
-            total_cart += order.ticket.price * order.quantity
-        return f"{total_cart}"
 
 
 '''

@@ -47,7 +47,11 @@ def add_to_cart(request, pk):
 
 
 def cart(request):
-    cart: Cart = request.user.cart
+    user = request.user
+
+    cart = user.cart
+
+    total_orders = Order.total(user=user)
 
     orders = cart.orders.all()
 
@@ -61,9 +65,13 @@ def cart(request):
         formset = OrderFormSet(request.POST, queryset=orders)
         if formset.is_valid():
             formset.save()
+            if orders.count() == 0:
+                cart.delete()
+                return redirect('index')
             return redirect('store:cart')
 
-    return render(request, 'store/cart.html', context={"cart": cart, "orders": orders, "forms": formset})
+    return render(request, 'store/cart.html', context={"forms": formset,
+                                                       "user": user, "total": total_orders})
 
 
 def delete_cart(request):
