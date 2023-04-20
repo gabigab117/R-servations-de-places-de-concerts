@@ -43,7 +43,7 @@ class Ticket(models.Model):
     # relation avec les concerts, plusieurs types de tickets...
     name = models.CharField(max_length=100, verbose_name="Ticket")
     price = models.IntegerField(default=0)
-    count = models.IntegerField(default=0, verbose_name="Nombre de places")
+    stock = models.IntegerField(default=0, verbose_name="Nombre de places")
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE, verbose_name="Artiste")
     city = models.ForeignKey(Town, on_delete=models.CASCADE)
     country = models.CharField(max_length=300, choices=[(c.alpha2.lower(), c.name) for c in countries],
@@ -124,7 +124,7 @@ class Cart(models.Model):
         orders = self.orders.all()
 
         for order in orders:
-            order.ticket.count -= order.quantity
+            order.ticket.stock -= order.quantity
             order.ticket.save()
             order.ordered = True
             order.ordered_date = timezone.now()

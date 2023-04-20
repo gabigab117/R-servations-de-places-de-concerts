@@ -1,4 +1,6 @@
 from django import forms
+from django.shortcuts import redirect
+
 from store.models import Order
 
 
@@ -6,13 +8,13 @@ from store.models import Order
 class OrderForm(forms.ModelForm):
     # je modifie le widget utilisé
     # modifier la qté dans le panier :
-    quantity = forms.ChoiceField(choices=[(i, i) for i in range(1, 11)])
+    quantity = forms.IntegerField(max_value=100, min_value=1)
     # supprimer un article du panier :
     delete = forms.BooleanField(initial=False, required=False, label='supprimer')
 
     class Meta:
         model = Order
-        fields = ["quantity"]
+        fields = ["quantity", 'delete']
 
     # relier le delete avec save
     def save(self, *args, **kwargs):
@@ -21,4 +23,7 @@ class OrderForm(forms.ModelForm):
         if self.cleaned_data['delete']:
             # if self.cleaned_data['delete'] is True:
             return self.instance.delete()
+        if self.cleaned_data['quantity'] > self.instance.ticket.stock:
+            return None
+
         return super().save(*args, **kwargs)

@@ -8,13 +8,14 @@
 {{ concert.name.name }}
 
 {% for ticket in tickets %}
+{% if ticket.stock > 0 %}
 <p>
-<i>{{ ticket.name }} - {{ ticket.count }} places restante(s).</i>
+<i>{{ ticket.name }} - {{ ticket.stock }} places restante(s).</i>
     </p>
 {% if user.is_authenticated %}
 <p><a href="{% url 'store:add-to-cart' pk=ticket.pk %}">Ajouter au panier</a> </p>
 {% endif %}
-
+{% endif %}
 {% endfor %}
 
 {% endblock %}

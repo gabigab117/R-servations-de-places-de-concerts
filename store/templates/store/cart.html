@@ -16,14 +16,15 @@ Form set factory
     {% for form in forms %}
     <div>
         <p>{{ form.instance.ticket.artist.name }} -- {{ form.instance.ticket.city.name }}</p>
-        <p>{{ form.instance.ticket.price }} / ticket</p>
+        <p>{{ form.instance.ticket.price }} € / ticket</p>
+        <p><h3>{{ form.instance.ticket.stock }} tickets restants en stock</h3></p>
         {{ form.as_p }}
     </div>
 {% endfor %}
     <button type="submit" class="btn btn-primary">Mettre à jour les quantités</button>
 </form>
-
-<p><h2>Montant du panier : {{ total }}</h2></p>
+<p>{{ erreur }}</p>
+<p><h2>Montant du panier : {{ total }} €</h2></p>
 
 
 
