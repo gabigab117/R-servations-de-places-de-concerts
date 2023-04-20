@@ -1,16 +1,19 @@
 <div>
     <p>--</p>
-    <p>{{ addresse.name }}</p>
-    <p>{{ addresse.address_1 }}</p>
-    {% if addresse.address_2 %}
-<p>{{ addresse.address_2 }}</p>
+    <p>{{ address.name }}</p>
+    <p>{{ address.address_1 }}</p>
+    {% if address.address_2 %}
+<p>{{ address.address_2 }}</p>
     {% endif %}
-<p>{{ addresse.zip_code }} {{ addresse.city }}</p>
-    <p>{{ addresse.get_country_display }}</p>
+<p>{{ address.zip_code }} {{ address.city }}</p>
+    <p>{{ address.get_country_display }}</p>
 
-    {% if not addresse.default %}
+    {% if not address.default %}
     <p>
-        <a href="{% url 'account:address-default' pk=addresse.pk %}"> <button style="margin-top: 1em;" class="btn btn-primary">Définir comme adresse par défaut</button></a>
+        <a href="{% url 'account:address-default' pk=address.pk %}"> <button style="margin-top: 1em;" class="btn btn-primary">Définir comme adresse par défaut</button></a>
+    </p>
+    <p>
+        <a href="{% url 'account:delete-address' pk=address.pk %}"> <button style="margin-top: 1em;" class="btn btn-danger">Supprimer cette adresse</button></a>
     </p>
     {% else %}
     <p></p><h3>Adresse par défaut</h3></p>

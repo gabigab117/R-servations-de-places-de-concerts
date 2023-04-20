@@ -90,3 +90,10 @@ def set_address_default(request, pk):
     user_addresse_default.save()
 
     return redirect('account:profil')
+
+
+def delete_address(request, pk):
+    user: Shopper = request.user
+    address: ShippingAddress = user.addresses.get(pk=pk)
+    address.delete()
+    return redirect('account:profil')
