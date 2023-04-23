@@ -1,5 +1,4 @@
 from django import forms
-from django.shortcuts import redirect
 
 from store.models import Order
 
@@ -16,6 +15,14 @@ class OrderForm(forms.ModelForm):
         model = Order
         fields = ["quantity", 'delete']
 
+    def clean(self):
+        cleaned_data = super().clean()
+        quantity = self.cleaned_data.get("quantity")
+        if quantity > self.instance.ticket.stock:
+            raise forms.ValidationError(f"Il ne reste que {self.instance.ticket.stock} tickets en stock")
+
+        return cleaned_data
+
     # relier le delete avec save
     def save(self, *args, **kwargs):
         # récupérer les données de mon formulaire :
@@ -23,7 +30,5 @@ class OrderForm(forms.ModelForm):
         if self.cleaned_data['delete']:
             # if self.cleaned_data['delete'] is True:
             return self.instance.delete()
-        if self.cleaned_data['quantity'] > self.instance.ticket.stock:
-            return None
 
         return super().save(*args, **kwargs)
