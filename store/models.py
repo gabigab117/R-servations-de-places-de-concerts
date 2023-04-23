@@ -102,14 +102,14 @@ class Order(models.Model):
 
         return f"{self.ticket.name}, {self.quantity}"
 
-    @classmethod
-    def total(cls, user):
+    @staticmethod
+    def total(user):
         total = 0
         orders_in_cart = Order.objects.filter(user=user, ordered=False)
         for order in orders_in_cart:
             total += order.ticket.price * order.quantity
 
-        return f"{total}"
+        return total
 
 
 class Cart(models.Model):
