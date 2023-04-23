@@ -17,13 +17,19 @@ Form set factory
     <div>
         <p>{{ form.instance.ticket.artist.name }} -- {{ form.instance.ticket.city.name }}</p>
         <p>{{ form.instance.ticket.price }} € / ticket</p>
-        <p><h3>{{ form.instance.ticket.stock }} tickets restants en stock</h3></p>
+        <p><h5>{{ form.instance.ticket.stock }} tickets restants en stock</h5></p>
         {{ form.as_p }}
     </div>
+
+    {% if form.errors %}
+{% for message in form.errors.values %}
+    <p><h3 style="color: red;">{{ message }}</h3></p>
+    {% endfor %}
+{% endif %}
 {% endfor %}
+
     <button type="submit" class="btn btn-primary">Mettre à jour les quantités</button>
 </form>
-<p>{{ erreur }}</p>
 <p><h2>Montant du panier : {{ total }} €</h2></p>
 
 
@@ -34,4 +40,5 @@ Form set factory
     </form>
 <br>
 <p><a href="{% url 'store:delete-cart' %}" class="btn btn-danger">Supprimer le panier</a></p>
+
 {% endblock %}
