@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+
 from .forms import CustomUserCreation, ProfilForm
 from django.contrib.auth import authenticate, login, logout
 from django.forms import model_to_dict
@@ -11,6 +12,7 @@ def signup(request):
         form = CustomUserCreation(request.POST)
         if form.is_valid():
             form.save()
+
             return redirect('index')
 
     else:

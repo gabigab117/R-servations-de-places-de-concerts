@@ -32,7 +32,6 @@ class Shopper(AbstractUser):
     # I don't want username
     username = None
     email = models.EmailField(unique=True, max_length=300)
-    is_email_verified = models.BooleanField(default=False)
     genre = models.CharField(max_length=10, choices=[("nr", "Non renseigné"), ("mme", "Madame"), ("mr", "Monsieur")])
     first_name = models.CharField(max_length=300, verbose_name="Prénom")
     last_name = models.CharField(max_length=300, verbose_name="Nom")
