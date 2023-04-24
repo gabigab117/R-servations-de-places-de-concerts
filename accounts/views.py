@@ -5,13 +5,15 @@ from .forms import CustomUserCreation, ProfilForm
 from django.contrib.auth import authenticate, login, logout
 from django.forms import model_to_dict
 from .models import Shopper, ShippingAddress
+from verify_email.email_handler import send_verification_email
 
 
 def signup(request):
     if request.method == 'POST':
         form = CustomUserCreation(request.POST)
         if form.is_valid():
-            form.save()
+            inactive_user = send_verification_email(request, form)
+            # form.save(), non utilisé car inactive_user à la place
 
             return redirect('index')
 
