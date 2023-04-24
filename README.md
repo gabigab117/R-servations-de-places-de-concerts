@@ -38,4 +38,9 @@ dans mon store je vais ajouter un forms.py<br>
 dans ma vue cart on utilise le modelformset_factory(), on passe le modème et le formulaire<br>
 https://docs.djangoproject.com/fr/4.1/ref/forms/models/ <br>
 On créer une classe puis une instance. On retourne au contexte<br>
+<br>
+EMAIL VERIF<br>
+commencer par créer un champ bool pour notre user pour voir si verif ou non<br>
+view login je vais la modifier pour que l'utilisateur soit vérifié avant. <br>
+
 

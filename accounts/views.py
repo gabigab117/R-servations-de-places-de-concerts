@@ -11,8 +11,6 @@ def signup(request):
         form = CustomUserCreation(request.POST)
         if form.is_valid():
             form.save()
-            # user = authenticate(username=request.POST.get("email"), password=request.POST.get("password1"))
-            # login(request, user)
             return redirect('index')
 
     else:
@@ -27,7 +25,8 @@ def login_user(request):
     if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]
-        user = authenticate(username=username, password=password)
+        user: Shopper = authenticate(username=username, password=password)
+
         if user:
             login(request, user)
             return redirect("index")

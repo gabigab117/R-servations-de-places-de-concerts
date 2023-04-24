@@ -18,6 +18,7 @@ class OrderForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         quantity = self.cleaned_data.get("quantity")
+        '''# pk le cleaned_data fonctionne sans le self ?'''
         if quantity > self.instance.ticket.stock:
             raise forms.ValidationError(f"Il ne reste que {self.instance.ticket.stock} tickets en stock")
 

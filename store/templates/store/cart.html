@@ -26,6 +26,7 @@ Form set factory
     <p><h3 style="color: red;">{{ message }}</h3></p>
     {% endfor %}
 {% endif %}
+
 {% endfor %}
 
     <button type="submit" class="btn btn-primary">Mettre à jour les quantités</button>
@@ -40,5 +41,6 @@ Form set factory
     </form>
 <br>
 <p><a href="{% url 'store:delete-cart' %}" class="btn btn-danger">Supprimer le panier</a></p>
+
 
 {% endblock %}
