@@ -88,6 +88,13 @@ class Concert(models.Model):
 
         super().save(*args, **kwargs)
 
+    def stock_tickets(self):
+        tickets = self.ticket.all()
+        total = 0
+        for ticket in tickets:
+            total += ticket.stock
+        return total
+
 
 class Order(models.Model):
     # c'est ce qui va être dans le panier
@@ -102,6 +109,7 @@ class Order(models.Model):
 
         return f"{self.ticket.name}, {self.quantity}"
 
+    # une méthode statique. Car avec une méthode d'instance je ne récupère qu'une instance. Là je les veux toutes.
     @staticmethod
     def total(user):
         total = 0

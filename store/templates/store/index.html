@@ -5,11 +5,18 @@
 {% endblock %}
 
 {% block content %}
+
+
 {% for concert in concerts %}
+
+{% if concert.stock_tickets > 0 %}
+
 <p><h2>{{ concert.name.name }} a {{ concert.city.name }}</h2></p>
 <img src="{{ concert.thumbnail.url }}" alt="{{ concert.name.name }}" width="600">
 <p><i>Date : {{ concert.date }}, {{ concert.place }}</i></p>
-<button type="button" class="btn btn-light"><a href="{{ concert.get_absolute_url }}" class="link-body-emphasis link-offset-2 link-underline-opacity-25 link-underline-opacity-75-hover">On réserve ?</a></button>
+<a href="{{ concert.get_absolute_url }}" class="btn btn-primary">On réserve ?</a>
+
+{% endif %}
 {% endfor %}
 
 
