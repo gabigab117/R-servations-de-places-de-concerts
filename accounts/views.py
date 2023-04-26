@@ -46,7 +46,7 @@ def logout_user(request):
     return redirect('index')
 
 
-@login_required(login_url='account:login')
+@login_required()
 def profil(request):
     context = {}
     # dans le initial je vais passer en dictionnaire mon instance user
@@ -72,7 +72,7 @@ def profil(request):
     return render(request, 'accounts/profil.html', context=context)
 
 
-@login_required(login_url='account:login')
+@login_required()
 def set_address_default(request, pk):
     user = request.user
     user_addresses: ShippingAddress = user.addresses.all()

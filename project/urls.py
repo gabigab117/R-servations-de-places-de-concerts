@@ -9,4 +9,5 @@ urlpatterns = [
     path('', index, name="index"),
     path('account/', include("accounts.urls")),
     path('store/', include("store.urls")),
+    path('verification/', include('verify_email.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

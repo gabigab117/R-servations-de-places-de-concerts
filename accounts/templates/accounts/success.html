@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block head %}
+<title>Confirmation</title>
+{% endblock %}
+
+{% block content %}
+Votre adresse email est bien vérifiée.
+<a href="{% url 'account:login' %}" class="btn btn-success">Connexion</a>
+
+{% endblock %}

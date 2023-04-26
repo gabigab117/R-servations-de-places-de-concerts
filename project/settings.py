@@ -139,3 +139,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get('EMAIL_ID')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PW')
 
+LOGIN_URL = "account:login"
+
+# paramètres pour django email verify
+VERIFICATION_SUCCESS_TEMPLATE = "accounts/success.html"
