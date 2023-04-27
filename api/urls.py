@@ -8,6 +8,7 @@ router.register('ticket', TicketViewset)
 
 
 urlpatterns = [
+    path("api-auth/", include("rest_framework.urls")),
     path('', include(router.urls)),
 
 ]
