@@ -10,4 +10,5 @@ urlpatterns = [
     path('account/', include("accounts.urls")),
     path('store/', include("store.urls")),
     path('verification/', include('verify_email.urls')),
+    path('api/', include('api.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
