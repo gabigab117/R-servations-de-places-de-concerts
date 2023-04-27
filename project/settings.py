@@ -64,7 +64,7 @@ ROOT_URLCONF = 'project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / "templates"],
+        'DIRS': [BASE_DIR / "templates", BASE_DIR / 'project/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -146,3 +146,12 @@ LOGIN_URL = "account:login"
 
 # paramètres pour django email verify
 VERIFICATION_SUCCESS_TEMPLATE = "accounts/success.html"
+
+# rest frmw
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES':
+        [
+         'rest_framework.authentication.BasicAuthentication',
+         'rest_framework.authentication.SessionAuthentication'
+         ]
+}
