@@ -23,7 +23,7 @@ Form set factory
 
     {% if form.errors %}
 {% for message in form.errors.values %}
-    <p><h3 style="color: red;">{{ message }}</h3></p>
+    <h3 style="color: red;">{{ message }}</h3>
     {% endfor %}
 {% endif %}
 
@@ -31,7 +31,7 @@ Form set factory
 
     <button type="submit" class="btn btn-primary">Mettre à jour les quantités</button>
 </form>
-<p><h2>Montant du panier : {{ total }} €</h2></p>
+<h2>Montant du panier : {{ total }} €</h2>
 
 
 
