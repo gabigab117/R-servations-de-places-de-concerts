@@ -12,7 +12,7 @@
 {% if concert.stock_tickets > 0 %}
 
 <h2>{{ concert.name.name }} a {{ concert.city.name }}</h2>
-<img src="{{ concert.thumbnail.url }}" alt="{{ concert.name.name }}" width="600">
+<img src="{{ concert.thumbnail_url }}" alt="{{ concert.name.name }}" width="600">
 <p><i>Date : {{ concert.date }}, {{ concert.place }}</i></p>
 <a href="{{ concert.get_absolute_url }}" class="btn btn-primary">On réserve ?</a>
 

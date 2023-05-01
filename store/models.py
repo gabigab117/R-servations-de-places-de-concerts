@@ -95,6 +95,9 @@ class Concert(models.Model):
             total += ticket.stock
         return total
 
+    def thumbnail_url(self):
+        return self.thumbnail.url if self.thumbnail else ""
+
 
 class Order(models.Model):
     # c'est ce qui va être dans le panier
