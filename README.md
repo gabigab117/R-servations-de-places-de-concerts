@@ -1,7 +1,6 @@
 Idée d'améliorations : <br>
 filtres par types de concert etc...
 <br>
-admin custom
 
 # Réservation de places de concerts
  projet django style e commerce
