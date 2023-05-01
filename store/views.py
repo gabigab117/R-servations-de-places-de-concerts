@@ -19,6 +19,11 @@ stripe.api_key = STRIPE_APIKEY
 def index(request):
     concerts = Concert.objects.all()
 
+    if request.method == "GET":
+        name = request.GET.get('recherche')
+        if name:
+            concerts = Concert.objects.filter(slug__icontains=name)
+
     return render(request, "store/index.html", context={"concerts": concerts})
 
 
