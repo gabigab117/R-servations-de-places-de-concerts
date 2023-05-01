@@ -1,5 +1,6 @@
 import os
 
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
@@ -28,22 +29,13 @@ def concert_detail(request, slug):
 
 
 def add_to_cart(request, pk):
-    user = request.user
-    ticket: Ticket = Ticket.objects.get(pk=pk)
-
-    cart, _ = Cart.objects.get_or_create(user=user)
-    order, created = Order.objects.get_or_create(ticket=ticket, ordered=False, user=user)
-
-    if created:
-        cart.orders.add(order)
-        cart.save()
-    else:
-        order.quantity += 1
-        order.save()
+    user: Shopper = request.user
+    user.add_to_cart(pk=pk)
 
     return redirect('index')
 
 
+@login_required
 def cart(request):
     user = request.user
 

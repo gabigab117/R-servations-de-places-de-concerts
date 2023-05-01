@@ -3,6 +3,7 @@ from django.db import models
 import iso3166
 import stripe
 from project.settings import STRIPE_APIKEY
+from store.models import Ticket, Cart, Order
 
 stripe.api_key = STRIPE_APIKEY
 
@@ -41,6 +42,19 @@ class Shopper(AbstractUser):
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["first_name", "last_name"]
     objects = CustomManager()
+
+    def add_to_cart(self, pk):
+        ticket: Ticket = Ticket.objects.get(pk=pk)
+
+        cart, _ = Cart.objects.get_or_create(user=self)
+        order, created = Order.objects.get_or_create(ticket=ticket, ordered=False, user=self)
+
+        if created:
+            cart.orders.add(order)
+            cart.save()
+        else:
+            order.quantity += 1
+            order.save()
 
 
 # à savoir que j'ai des \n à chaque saut de ligne
