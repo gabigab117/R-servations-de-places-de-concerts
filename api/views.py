@@ -15,9 +15,20 @@ class TicketViewset(viewsets.ModelViewSet):
                         "id": ["in"]}
 
 
-class UserViewset(viewsets.ModelViewSet):
-    queryset = Shopper.objects.all()
+class UserViewset(viewsets.ReadOnlyModelViewSet):
+    # queryset = Shopper.objects.all()
     serializer_class = ShopperSerializer
+
+    # je peux utiliser la méthode get_queryset
+    def get_queryset(self):
+        queryset = Shopper.objects.filter(is_active=True)
+        # si je veux filtrer par l'url genre :
+        # http://127.0.0.1:8000/api/shopper/?email=gabrieltrouve5@gmail.com
+        # "email" sera donc le paramètre de l'url
+        email = self.request.GET.get("email")
+        if email:
+            queryset = Shopper.objects.filter(email=email)
+        return queryset
 
     '''
     fieldset = {
