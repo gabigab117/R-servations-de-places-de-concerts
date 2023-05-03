@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path
 from .views import signup, login_user, logout_user, profil, set_address_default, delete_address
 
 

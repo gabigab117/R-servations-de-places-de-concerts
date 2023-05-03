@@ -4,10 +4,10 @@ from .views import TicketViewset, UserViewset
 
 
 router = DefaultRouter()
-router.register('ticket', TicketViewset)
-router.register('shopper', UserViewset)
+router.register('ticket', TicketViewset, basename="ticket")
+router.register('shopper', UserViewset, basename="shopper")
 
-
+app_name = "api"
 urlpatterns = [
     path("api-auth/", include("rest_framework.urls")),
     path('', include(router.urls)),

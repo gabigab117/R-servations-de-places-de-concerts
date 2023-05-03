@@ -5,7 +5,7 @@ from django import forms
 
 # création d'un compte
 class CustomUserCreation(UserCreationForm):
-    class Meta(UserCreationForm.Meta):
+    class Meta:
         model = Shopper
         fields = ('email', 'genre', 'last_name', 'first_name', 'tel')
 

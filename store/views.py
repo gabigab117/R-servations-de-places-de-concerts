@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
 from accounts.models import Shopper, ShippingAddress
-from .models import Concert, Cart, Order, Ticket
+from .models import Concert, Order
 from project.settings import STRIPE_APIKEY
 import stripe
 from django.forms import modelformset_factory

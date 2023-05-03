@@ -45,8 +45,9 @@ INSTALLED_APPS = [
     'store',
     'verify_email.apps.VerifyEmailConfig',
     'rest_framework',
+    'rest_framework.authtoken',
     'api',
-    'django_filters'
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -64,7 +65,7 @@ ROOT_URLCONF = 'project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / "templates", BASE_DIR / 'project/templates'],
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
