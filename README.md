@@ -4,7 +4,15 @@ filtres par types de concert etc...
 
 # Réservation de places de concerts
  projet django style e commerce
-
+<h1>API ! ! !</h1><br>
+J'utilise Django rest frmw.<br>
+Le router permet de gérer toutes mes opés CRUD.<br>
+Obligatoire avec un ModelViewset.<br>
+Avec mon ModelViwset il faut serializer_class et queryset ou def get_queryset<br>
+ReadOnlyModelViewset si je veux être uniquement en lecture<br>
+filtrer dans l'url dans le queryset : <br>
+email = self.request.GET.get("email")<br>
+        if email: modifier le queryset avec l'email
 
 
 Stripe <br>
@@ -40,5 +48,7 @@ dans mon store je vais ajouter un forms.py<br>
 dans ma vue cart on utilise le modelformset_factory(), on passe le modèle et le formulaire<br>
 https://docs.djangoproject.com/fr/4.1/ref/forms/models/ <br>
 On créer une classe puis une instance. On retourne au contexte<br>
+<br>
+
 
 
