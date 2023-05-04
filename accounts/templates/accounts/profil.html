@@ -15,5 +15,5 @@
 {% for address in addresses %}
 {% include 'accounts/addresses.html' %}
 {% endfor %}
-
+<h3><a href="{% url 'account:password-change' %}">Changer de mot de passe</a> </h3>
 {% endblock %}

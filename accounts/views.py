@@ -1,7 +1,9 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import PasswordChangeView
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 
-from .forms import CustomUserCreation, ProfilForm
+from .forms import CustomUserCreation, ProfilForm, UserPasswordChangeForm
 from django.contrib.auth import authenticate, login, logout
 from django.forms import model_to_dict
 from .models import Shopper, ShippingAddress
@@ -100,3 +102,9 @@ def delete_address(request, pk):
     address: ShippingAddress = user.addresses.get(pk=pk)
     address.delete()
     return redirect('account:profil')
+
+
+class UserPasswordChange(PasswordChangeView):
+    form_class = UserPasswordChangeForm
+    template_name = "accounts/password_change.html"
+    success_url = reverse_lazy("index")
