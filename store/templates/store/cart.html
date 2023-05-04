@@ -15,28 +15,38 @@ Form set factory
 <form method="post">
     {% csrf_token %}
     {{ forms.management_form }}
+
+    <div class="container">
+  <div class="row">
+
+    <div class="form-group">
+        <div class="col-12 col-md-6 col-lg-4">
     {% for form in forms %}
+<div class="card mb-3">
+                <div class="card-body">
 
-<div>
-    <table class="table">
 
-        <p>{{ form.instance.ticket.artist.name }} -- {{ form.instance.ticket.city.name }}</p>
-        <p>{{ form.instance.ticket.price }} € / ticket</p>
-        <h5>{{ form.instance.ticket.stock }} tickets restants en stock</h5>
+        <h5 class="card-title">{{ form.instance.ticket.artist.name }} -- {{ form.instance.ticket.city.name }}</h5>
+        <p class="card-text">{{ form.instance.ticket.price }} € / ticket</p>
+        <h6 class="card-subtitle mb-2 text-muted">{{ form.instance.ticket.stock }} tickets restants en stock</h6>
         {{ form.as_p }}
-
+                </div>
+</div>
 
     {% if form.errors %}
 {% for message in form.errors.values %}
     <h3 style="color: red;">{{ message }}</h3>
 
-    </table>
-    </div>
+
+
     {% endfor %}
 {% endif %}
 
 {% endfor %}
-
+    </div>
+  </div>
+    </div>
+    </div>
     <button type="submit" class="btn btn-primary">Mettre à jour les quantités</button>
 </form>
 
