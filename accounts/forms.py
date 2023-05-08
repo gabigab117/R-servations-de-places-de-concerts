@@ -1,6 +1,7 @@
 from .models import Shopper
-from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, SetPasswordForm
 from django import forms
+from django.contrib.auth import password_validation
 
 
 # création d'un compte
@@ -24,6 +25,14 @@ class UserPasswordChangeForm(PasswordChangeForm):
     new_password1 = forms.CharField(widget=forms.PasswordInput, label="Nouveau mot de passe")
     new_password2 = forms.CharField(widget=forms.PasswordInput, label="Nouveau mot de passe (répéter)")
 
-    class Meta:
-        model = Shopper
-        fields = ("old_password", "new_password", "new_password2")
+    '''
+    Inutile de déclarer une class Meta ?
+    '''
+
+
+class UserSetPasswordForm(SetPasswordForm):
+    new_password1 = forms.CharField(widget=forms.PasswordInput(), label="Nouveau mot de passe", strip=False)
+    new_password2 = forms.CharField(widget=forms.PasswordInput(), label="Confirmation", strip=False)
+    '''
+    Inutile de déclarer une class Meta ?
+    '''

@@ -1,9 +1,10 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import PasswordChangeView
+from django.contrib.auth.views import PasswordChangeView, PasswordResetView, PasswordResetDoneView, \
+    PasswordResetConfirmView, PasswordResetCompleteView
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 
-from .forms import CustomUserCreation, ProfilForm, UserPasswordChangeForm
+from .forms import CustomUserCreation, ProfilForm, UserPasswordChangeForm, UserSetPasswordForm
 from django.contrib.auth import authenticate, login, logout
 from django.forms import model_to_dict
 from .models import Shopper, ShippingAddress
@@ -108,3 +109,23 @@ class UserPasswordChange(PasswordChangeView):
     form_class = UserPasswordChangeForm
     template_name = "accounts/password_change.html"
     success_url = reverse_lazy("index")
+
+
+class UserPasswordResetView(PasswordResetView):
+    email_template_name = "accounts/password_reset_email.html"
+    template_name = "accounts/password_reset_form.html"
+    success_url = reverse_lazy("account:password-reset-done")
+
+
+class UserPasswordResetDone(PasswordResetDoneView):
+    template_name = "accounts/password_reset_done.html"
+
+
+class UserPasswordResetConfirm(PasswordResetConfirmView):
+    form_class = UserSetPasswordForm
+    success_url = reverse_lazy("account:password-reset-complete")
+    template_name = "accounts/password_reset_confirm.html"
+
+
+class UserPasswordResetCompleteView(PasswordResetCompleteView):
+    template_name = "accounts/password_reset_complete.html"
