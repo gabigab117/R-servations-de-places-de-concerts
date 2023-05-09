@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
+from datetime import timedelta
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -46,6 +47,7 @@ INSTALLED_APPS = [
     'verify_email.apps.VerifyEmailConfig',
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_framework_simplejwt',
     'api',
     'django_filters',
 ]
@@ -153,6 +155,13 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES':
         [
          'rest_framework.authentication.BasicAuthentication',
-         'rest_framework.authentication.SessionAuthentication'
+         'rest_framework.authentication.SessionAuthentication',
+         'rest_framework_simplejwt.authentication.JWTAuthentication'
          ]
+}
+
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'REFRESH': timedelta(days=1)
 }

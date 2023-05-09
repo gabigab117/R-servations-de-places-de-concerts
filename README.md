@@ -49,6 +49,7 @@ dans ma vue cart on utilise le modelformset_factory(), on passe le modèle et le
 https://docs.djangoproject.com/fr/4.1/ref/forms/models/ <br>
 On créer une classe puis une instance. On retourne au contexte<br>
 <br>
-
+<br>
+Sécuriser l'accès aux api avec djangorestframework-simplejwt
 
 

@@ -1,6 +1,12 @@
-from store.models import Ticket
+from store.models import Ticket, Concert
 from accounts.models import Shopper
 from rest_framework import serializers
+
+
+class ConcertSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Concert
+        fields = "__all__"
 
 
 class TicketSerializer(serializers.ModelSerializer):
@@ -13,4 +19,4 @@ class TicketSerializer(serializers.ModelSerializer):
 class ShopperSerializer(serializers.ModelSerializer):
     class Meta:
         model = Shopper
-        fields = "__all__"
+        fields = ['first_name']

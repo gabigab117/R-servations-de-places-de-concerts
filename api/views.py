@@ -1,23 +1,33 @@
-from store.models import Ticket
+from store.models import Ticket, Concert
 from accounts.models import Shopper
 from rest_framework import viewsets
-from .serializers import TicketSerializer, ShopperSerializer
+from .serializers import TicketSerializer, ShopperSerializer, ConcertSerializer
 from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.permissions import IsAuthenticated
+from .permissions import IsAdminAuthenticated
 
 
-class TicketViewset(viewsets.ModelViewSet):
+class ConcertViewset(viewsets.ModelViewSet):
+    serializer_class = ConcertSerializer
+    queryset = Concert.objects.all()
+
+
+class TicketViewset(viewsets.ReadOnlyModelViewSet):
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
+    permission_classes = [IsAuthenticated]
     filter_backends = [SearchFilter, DjangoFilterBackend]
     search_fields = ["name"]
     filterset_fields = {"price": ["gte", "lte"],
                         "id": ["in"]}
 
 
-class UserViewset(viewsets.ReadOnlyModelViewSet):
+class UserViewset(viewsets.ModelViewSet):
     # queryset = Shopper.objects.all()
     serializer_class = ShopperSerializer
+    # être connecté pour accéder :
+    permission_classes = [IsAdminAuthenticated]
 
     # je peux utiliser la méthode get_queryset
     def get_queryset(self):
