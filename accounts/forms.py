@@ -1,7 +1,6 @@
 from .models import Shopper
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, SetPasswordForm
 from django import forms
-from django.contrib.auth import password_validation
 
 
 # création d'un compte
@@ -22,8 +21,8 @@ class ProfilForm(forms.ModelForm):
 
 class UserPasswordChangeForm(PasswordChangeForm):
     old_password = forms.CharField(widget=forms.PasswordInput, label="Ancien mot de passe")
-    new_password1 = forms.CharField(widget=forms.PasswordInput, label="Nouveau mot de passe")
-    new_password2 = forms.CharField(widget=forms.PasswordInput, label="Nouveau mot de passe (répéter)")
+    new_password1 = forms.CharField(widget=forms.PasswordInput, label="Nouveau mot de passe", strip=False)
+    new_password2 = forms.CharField(widget=forms.PasswordInput, label="Nouveau mot de passe (répéter)", strip=False)
 
     '''
     Inutile de déclarer une class Meta ?
