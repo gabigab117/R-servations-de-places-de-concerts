@@ -19,6 +19,7 @@ class CustomManager(BaseUserManager):
             raise ValueError("Veuillez entrer un email svp")
         user = self.model(email=self.normalize_email(email), first_name=first_name, last_name=last_name, **kwargs)
         user.set_password(password)
+        user.is_active = False
         user.save()
         return user
 

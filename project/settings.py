@@ -156,11 +156,13 @@ REST_FRAMEWORK = {
         [
          'rest_framework.authentication.BasicAuthentication',
          'rest_framework.authentication.SessionAuthentication',
+         # supprimer ce qui est au dessus si je veux id par token
          'rest_framework_simplejwt.authentication.JWTAuthentication'
          ]
 }
 
-
+# token pour l'avoir il faut avoir un compte
+# on peut le rendre actif que 1 jour ou autre
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
     'REFRESH': timedelta(days=1)
