@@ -1,3 +1,15 @@
+# Notes
+- Projet orienté eCommerce : vente de places de concert
+- Gestion des utilisateurs avec inscription, récupération de mot de passe, gestion des adresses, gestion du profile utilisateur
+- Chaque concert comporte plusieurs types de billets, avec un stock
+- Si on essaye d'ajouter plus de billets qu'il n'y a de stock on lève une erreur
+- Intégration d'un système de paiement avec l'API Stripe
+- Si le paiement aboutit, une méthode va soustraire la quantité achetée au stock, et le ticket aura un statut "commandé"
+- Intégration d'une API Django Rest Framework
+
+
+
+# Notes  personnelles ci-dessous
 Idée d'améliorations : <br>
 filtres par types de concert etc...
 <br>

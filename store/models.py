@@ -74,6 +74,14 @@ class Concert(models.Model):
     thumbnail = models.ImageField(upload_to="concerts")
     date = models.DateTimeField(verbose_name="Date / heure")
 
+    def rename_thumbnail(self):
+        if not self.thumbnail.name == self.slug:
+            self.thumbnail.name = self.slug
+            return self.thumbnail.name
+        elif self.thumbnail.name == "defaut.png":
+            return self.thumbnail.name
+        return self.thumbnail.name
+
     def get_absolute_url(self):
         return reverse('store:concert-detail', kwargs={"slug": self.slug})
 
@@ -85,6 +93,7 @@ class Concert(models.Model):
 
         if not self.slug:
             self.slug = slugify(self.name)
+        self.rename_thumbnail()
 
         super().save(*args, **kwargs)
 

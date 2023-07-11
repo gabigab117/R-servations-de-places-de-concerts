@@ -28,7 +28,8 @@ def index(request):
 
 
 def concert_detail(request, slug):
-    concert: Concert = get_object_or_404(Concert, slug=slug)
+    # concert: Concert = get_object_or_404(Concert, slug=slug)
+    concert: Concert = Concert.objects.get(slug=slug)
     tickets = concert.ticket.all()
     return render(request, 'store/detail.html', context={"concert": concert, "tickets": tickets})
 
