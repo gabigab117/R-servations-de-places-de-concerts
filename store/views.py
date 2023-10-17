@@ -44,11 +44,8 @@ def add_to_cart(request, pk):
 @login_required
 def cart(request):
     user = request.user
-
     cart = user.cart
-
     total_orders = Order.total(user=user)
-
     orders = cart.orders.all()
 
     # https://docs.djangoproject.com/fr/4.1/ref/forms/models/
