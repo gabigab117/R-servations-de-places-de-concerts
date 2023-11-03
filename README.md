@@ -1,5 +1,7 @@
 # Premier projet après la formation Docstring (Mars 2023)
 
+## Résumé
+
 - Projet orienté eCommerce : vente de places de concert
 - Gestion des utilisateurs avec inscription, récupération de mot de passe, gestion des adresses, gestion du profil
   utilisateur
@@ -8,8 +10,6 @@
 - Intégration d'un système de paiement avec l'API Stripe
 - Si le paiement aboutit, une méthode va soustraire la quantité achetée au stock, et le ticket aura un statut "commandé"
 - Intégration d'une API Django Rest Framework (de manière très basique)
-
-## Résumé
 
 ### Apprentissage
 
